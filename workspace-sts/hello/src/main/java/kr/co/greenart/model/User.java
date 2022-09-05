@@ -6,6 +6,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 public class User {
+	private int id;
 //	@NotBlank = 값이 없거나 공백으로만 이루어져 있을 때 에러발생.
 //	@Size = 문자열값의 길이
 	@NotBlank(message = "이름을 입력해주세요")
@@ -19,7 +20,13 @@ public class User {
 
 	public User() {
 	}
-
+	
+	public User(int id, String name, int age) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
+	}
+	
 	public User(String name, int age) {
 		this.name = name;
 		this.age = age;
