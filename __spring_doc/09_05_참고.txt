@@ -1,0 +1,7 @@
+09/05;
+> mysql db를 위해 mvnrepository에서 pom.xml의존성 추가.
+- Apache Commons DBCP » 2.9.0
+- MySQL Connector/J » 8.0.30
+
+> Junit 의존성 추가.
+- Spring TestContext Framework » 5.3.22
