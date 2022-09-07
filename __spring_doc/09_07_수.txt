@@ -1,0 +1,134 @@
+복습;
+
+1. pom.xml mysql, dbcp 의존성 추가
+
+2. RootConfig.java
+- connection을 Bean으로 등록하기
+- properties로 설정값 정해주기.
+- @Value("${jdbc.drivername}") 해당하는 값을 꺼내와서 변수에 집어넣어 사용하기.
+- connection테스트 페이지 만들어도 ok or JUnit 테스트라이브러리로 테스트하기.
+- JUnit을 위해 pom.xml 의존성 추가. (Spring환경에서 테스트하기 위해, Spring-test 추가 버전주의)
+
+3. DataSourceTest.java - 테스트를 위한 클래스 생성
+- @Test로 테스트하기.
+- 설정에서 데이터 소스 불러오기 => @RunWith(SpringRunner.class)
+- 읽어올 스프링 설정들 => @ContextConfiguration( classes = { kr.co.greenart.config.RootConfig.class } )
+- assertNotNull(); => null값이 나오면 오류, 아니면 패스.
+- 여러개의 @Test가 있다면 각각 독립적으로 행동한다.
+- assertEquals(기대값, 결과값); => 기대값과 결과값이 같다면 패스.
+- 테스트할 것들을 작은 단위로 하나씩 작성하여 테스트 해보기~!~!
+- 익숙해지면, 하나의 모듈로써 사용가능.
+
+4. JdbcTemplateTest.java
+- Spring에서 제공해주는 jdbc 기능 라이브러리 의존성 추가.
+- jdbcTemplate를 @Bean으로 등록하기( RootConfig.java )
+- 값을 하나만 가져올 수 있는 메소드 작성해서, 테스트하기
+- CheckedException이 아닌 RuntimeException을 던진다. => DataAccessException 살펴보기
+- 
+
+5. UserRepository.java 인터페이스 작성.
+=>> UserRepositoryMySQL.java에서 implements하기
+- 저장소라는 것을 나타낼 수 있는 @Repository 어노테이션으로 표기해주기.
+- 주요 Bean인 @Primary로 표시해주기.
+- 커넥션을 날릴 jdbcTemplate의존성을 위해 @Autowired
+- db작업 메소드 중 하나인 update();
+update(?를 포함하는 sql 명령어, 파라미터 값 개수 맞춰서 순서대로 추가로 적어주기);
+- 사용자 목록 가져오는 select문을 사용하기위한 query(); 메소드
+- query(sql문, rowMapper); rowMapper => 쿼리 결과문을 맵핑해주는 rowMapper
+=> RowMapper를 implements 받는 클래스 하나 생성하여, @Override하기
+
+- RowMapper는 ResultSet 전달받아, 그 한 줄에 대한 값을 반환하는 구현하게 끔 작성된 interface이다.
+=> row를 무엇인가로 Mapping하는 하나의 일을 위한 interface. 여기에선 User라는 객체로 매핑하는 역할.
+
+6. UserService.java
+- @Repository가 잘 구현되어 있다면, @Service객체는 영향을 받지 않아야 한다.
+
+7. JdbcTemplateTest.java
+- update() 테스트 추가;
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+- 오늘의 것들,,,,주석도 참고.
+
+1. JdbcTemplateTest.java
+- delete() 테스트는 한번 실행하고, id값이 pk이기 때문에 에러가 날 것.
+=> transaction을 사용하면 테스트할 수 있다!
+
+- queryForList() => List<Map<String, Object>>반환.
+
+2. sql에 Cars 테이블 생성. (id, model, price)
+
+3. Car class 생성
+
+4. interface 생성 CarRepository.java
+- 필요한 행동들 추가. CRUD( 조회, 추가, 수정, 삭제 )
+
+5. CarRepositoryMySQL.java 생성
+- CarRepository implements 받기
+- 메소드 @Override해주기.
+- @Component 설정 후, Rootconfig.java에서 @ComponentScan("kr.co.greenart.model.car") 등록
+
+6. CarRepoTest.java에서 테스트하기.
+
+7. CarService에서 transaction 사용.
+- RootConfig.java에서 트랜잭션을 위한 설정 등록 Annotation 달기.
+=> @EnableTransactionManagement 
+// transaction 관리 설정 등록. + 트랜잭션을 관리할 수 있는 관리자를 Bean으로 등록하기.
+=>//	트랜잭션을 관리해주는 클래스를 Bean으로 등록하기
+	@Bean
+	@Autowired
+	public DataSourceTransactionManager txManager(DataSource ds) {
+		return new DataSourceTransactionManager(ds);
+	}
+
+- @Transactional // 트랜잭션이 필요하다라는 Annotation 등록.
+
+8. CarServiceTest.java에서 등록한 transaction 사용 테스트.
+- @Test(expected = DataAccessException.class)
+=> expected = 기대하는 예외에 대한 값 적어주기
+expected 적어놓고, 그 값이 나오지 않으면 에러로 처리.
+
+- delete() 테스트;
+- @Rollback을 사용하기 위해서 @Transactional을 등록해준다.
+- @Rollback(value = true) 어노테이션의 값을 true로 주면 항상 롤백 해준다.
+
+
+9. 여러가지 설정 
+- hello 프로젝트 우클릭 > properties > Spring > Beans Support에서 Config 파일들을 등록할 수 있다.
+- RootConfig, WebConfig, UserValidator 등록
+- Config Detection에 자동검색 체크해주기~ (잘 못 찾을 수도 있음)
+- Window > Show view > RequestMapping 창 띄우기
+=> request 이루어지는 파일들, 메소드 표시.
+- Spring Explorer는 Component, value, 등 여러가지 Bean관련 내용들을 표시.
+
+10. JdbcTemplate에서 제공해주는 것으로 여러 개 한번에 등록하기.
+- interface에 추가.
+- 추가한 것 CarRepositoryMySQL.java에서 @Override
+- jdbcTemplate에서 제공하는 batchUpdate("쿼리문", new BatchPreparedStatementSetter())메소드.
+=> 한 번에 여러쿼리문을 실행할 때. 예전에 DAO만들어 쓸 때,
+	pstmt.set타입(순서, 값);
+	pstmt.addBatch();
+	// (같은 SQL문을) 반복해서 작업하는 것 => Batch작업.
+	pstmt.addBatch(); // 한줄 씩 준비해 준것을 batch라는 작업에 하나씩 쌓아둔다. 
+	// 쌓아둔 batch작업을 실행하기. 
+	return pstmt.executeBatch(); // batch는 int[] 배열값을 반환한다.
+
+=> BatchPreparedStatementSetter 인터페이스 오버라이드 하기.
+=> @Override
+   public void setValues(PreparedStatement ps, int i) throws SQLException {
+	Car car = list.get(i);
+	ps.setString(1, car.getModel());
+	ps.setInt(2, car.getPrice());
+   }
+			
+   @Override
+   public int getBatchSize() {
+	// BatchSize -> 몇번 할 것인지 정해주기.
+	// 여기선 list의 사이즈만큼만 행동할 거임.
+	return list.size();
+   }
+
+
+
+
+
+
