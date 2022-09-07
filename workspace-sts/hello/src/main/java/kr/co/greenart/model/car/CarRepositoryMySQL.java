@@ -1,11 +1,13 @@
 package kr.co.greenart.model.car;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -55,6 +57,26 @@ public class CarRepositoryMySQL implements CarRepository {
 	@Override
 	public int delete(int id) {
 		return jdbcTemplate.update("DELETE FROM cars WHERE id=?", id);
+	}
+
+	@Override
+	public int[] batchInsert(List<Car> list) {
+		return jdbcTemplate.batchUpdate("INSERT INTO cars (model, price) VALUES (?, ?)"
+				, new BatchPreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						Car car = list.get(i);
+						ps.setString(1, car.getModel());
+						ps.setInt(2, car.getPrice());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// BatchSize -> 몇번 할 것인지 정해주기.
+						// 여기선 list의 사이즈만큼만 행동할 거임.
+						return list.size();
+					}
+				});
 	}
 	
 	

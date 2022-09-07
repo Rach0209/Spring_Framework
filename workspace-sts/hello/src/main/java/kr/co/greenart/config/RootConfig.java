@@ -6,14 +6,19 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 // Spring에서 @PropertySource는 properties 값을 꺼내서 사용할 수 있게 해줌
 // PropertySource의 value 값은 classpath경로 or 파일의 경로를 적어준다.
 @Configuration
 @PropertySource("classpath:kr/co/greenart/config/mysql.properties")
+@ComponentScan("kr.co.greenart.model.car")
+@EnableTransactionManagement // transaction 관리 설정 등록. + 트랜잭션을 관리할 수 있는 관리자를 Bean으로 등록하기.
 public class RootConfig {
 //	@PropertySource의 값을 꺼내와서 쓰기위한 @Value value의값은 properties의 이름과 같아야 한다.
 	@Value("${jdbc.drivername}")
@@ -47,5 +52,12 @@ public class RootConfig {
 	public JdbcTemplate jdbcTemplate(DataSource ds) {
 		return new JdbcTemplate(ds);
 //		
+	}
+	
+//	트랜잭션을 관리해주는 클래스를 Bean으로 등록하기
+	@Bean
+	@Autowired
+	public DataSourceTransactionManager txManager(DataSource ds) {
+		return new DataSourceTransactionManager(ds);
 	}
 }
