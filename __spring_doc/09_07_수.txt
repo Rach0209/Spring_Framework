@@ -81,7 +81,7 @@ update(?를 포함하는 sql 명령어, 파라미터 값 개수 맞춰서 순서
 	}
 
 - @Transactional // 트랜잭션이 필요하다라는 Annotation 등록.
-
+=> 기본적인 Exception은 checked, 상속받는 RuntimeException은 unchecked
 8. CarServiceTest.java에서 등록한 transaction 사용 테스트.
 - @Test(expected = DataAccessException.class)
 => expected = 기대하는 예외에 대한 값 적어주기
