@@ -13,12 +13,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Primary
+//@Primary primary가 두개가 되어서, CarRepositoryNamed에서도 @Primary사용했는데 에러낫엇음.
 public class CarRepositoryMySQL implements CarRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	private CarRowMapper mapper = new CarRowMapper();
 	
+//	RowMapper를 간단히 하기 위해, RootConfig에서 NamedParameterJdbcTemplate를 Bean 추가해줌.<<<< 확인하세요
 	private class CarRowMapper implements RowMapper<Car> {
 		@Override
 		public Car mapRow(ResultSet rs, int rowNum) throws SQLException {

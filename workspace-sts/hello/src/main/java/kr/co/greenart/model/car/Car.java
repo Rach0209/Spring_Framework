@@ -34,6 +34,11 @@ public class Car {
 		return price;
 	}
 
+	@Override
+	public String toString() {
+		return "Car [id=" + id + ", model=" + model + ", price=" + price + "]";
+	}
+
 	public void setPrice(int price) {
 		this.price = price;
 	}

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 // PropertySource의 value 값은 classpath경로 or 파일의 경로를 적어준다.
 @Configuration
 @PropertySource("classpath:kr/co/greenart/config/mysql.properties")
-@ComponentScan("kr.co.greenart.model.car")
+//@ComponentScan("kr.co.greenart.model.car")
 @EnableTransactionManagement // transaction 관리 설정 등록. + 트랜잭션을 관리할 수 있는 관리자를 Bean으로 등록하기.
 public class RootConfig {
 //	@PropertySource의 값을 꺼내와서 쓰기위한 @Value value의값은 properties의 이름과 같아야 한다.
@@ -59,5 +60,11 @@ public class RootConfig {
 	@Autowired
 	public DataSourceTransactionManager txManager(DataSource ds) {
 		return new DataSourceTransactionManager(ds);
+	}
+	
+	@Bean
+	@Autowired
+	public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource ds) {
+		return new NamedParameterJdbcTemplate(ds);
 	}
 }
