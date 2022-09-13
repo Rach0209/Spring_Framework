@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service // Bean으로 등록하기위해 @Component를 달아준 것들을 찾을 수 있게 ComponentScan을 달아주기 (WebConfig.java)
 public class CarService {
 	@Autowired
 	private CarRepository repo;

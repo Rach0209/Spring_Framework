@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository // Primary를 쓰거나, Bean이름을 주고, Service객체에서 Qualifier를 사용하여 사용할 이름을 적어주기
 @Primary
 public class CarRepositoryNamed implements CarRepository {
 //	객체의존성을 주입하기위해(configure없이)

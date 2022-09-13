@@ -33,7 +33,7 @@ public class CarController {
 //	ResponseEntity<String> view()
 //	return ResponseEntity 어쩌구하면 응답이 바디로 날아간다!
 	
-//	Spring에서 알아서 Json 형태로 만들어 준다.
+//	Spring에 com.fasterxml.jackson.core(json)의존성 추가해주면 알아서 Json 형태로 만들어 준다.
 //	list만 호출하면 됨.toString() xx
 	@GetMapping
 	public @ResponseBody List<Car> view() {

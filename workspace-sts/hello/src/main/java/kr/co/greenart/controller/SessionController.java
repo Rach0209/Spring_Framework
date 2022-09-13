@@ -36,7 +36,7 @@ public class SessionController {
 		return (String) session.getAttribute("myname");
 	}
 	
-//	model에 attribute를 담으면 사실 상 request에 attribute에 담았다 뺐다 하는것임.
+//	model에 attribute를 담으면 사실 상 request의 attribute에 담았다 뺐다 하는것임.
 //	session으로 관리를 원한다면, @SessionAttributes("이름")에 이름을 정해주면, 알아서 session으로 관리해준다.
 	@GetMapping("/model")
 	public String addModelValue(Model model) {

@@ -39,7 +39,7 @@ public class CarRepositoryMySQL implements CarRepository {
 
 	@Override
 	public Car getById(int id) {
-//		queryForObject 순서를 mapper먼저 받게해야 디프리케이트되지않음.
+//		queryForObject;결과가 하나일 때. 파라미터 순서를 mapper먼저 받게해야 디프리케이트되지않음.
 		return jdbcTemplate.queryForObject("SELECT * FROM cars WHERE id=?", mapper, id);
 	}
 
