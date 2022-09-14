@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+// HandlerInterceptorAdapter 클래스를 상속하거나, HandlerInterceptor 인터페이스를 구현하면 된다.
 @Component
 public class MyInterceptor extends HandlerInterceptorAdapter {
 	// WebConfig에 추가 입력 필요.
