@@ -31,13 +31,13 @@ public class MyAspect {
 	// 실행 전, 후로 하고 싶다.!
 	@Around("repository()")
 	public Object loggingTime(ProceedingJoinPoint jp) throws Throwable {
-		// 실행 전
+		// 실행 전 - @Before 와 같음
 		long start = System.nanoTime();
 		logger.info("시작 시간: " + start);
 		
 		Object proceed = jp.proceed(); // 실제 실행되는 메소드 // 이 메소드 위에 적으면 실행 전 밑에는 실행 후.
 		
-		// 실행 후
+		// 실행 후 - @After 와 같음
 		long end = System.nanoTime();
 		logger.info("종료 시간: " + end);
 		

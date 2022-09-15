@@ -57,6 +57,7 @@ public class FileSystemRepository implements FileRepository {
 		return list;
 		
 		
+		// Functional Programming 함수적 프로그래밍
 //		stream에는 필터가 있는데, '함수'라는 것을 넣어주어야 하는데 자바는 '함수'를 넣을 수 없다. => 객체가 아니기 때문.
 //		함수를 표현하기 위해서 인터페이스 형태로 정의하여, 구현하게되면 함수를 표현할 수 있다.
 //		자바 8버전에서는 함수를 인터페이스 형태로 구현 가능하고, '람다식 표현'으로 구현할 수 있다.
