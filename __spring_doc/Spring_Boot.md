@@ -209,7 +209,7 @@ View 파일 변경이 가능하다.
 <details>
     <summary>정적 컨텐츠</summary>
     <p>스프링 부트 정적 컨텐츠 기능</p>
-    <a href="https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/spring-bootfeatures.html#boot-features-spring-mvc-static-content">https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/spring-bootfeatures.html#boot-features-spring-mvc-static-content</a>
+    <a href="https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/spring-boot-features.html#boot-features-spring-mvc-static-content">https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/spring-boot-features.html#boot-features-spring-mvc-static-content</a>
     </br>
 <code>resources/static/hello-static.html</code> 
 
