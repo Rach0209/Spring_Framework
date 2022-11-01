@@ -3,12 +3,6 @@
 ### Java 11, IntelliJ 및 Spring Boot 프로젝트 생성하기
 ##### Maven이 아닌 Gradle 체험!
 #### Spring boot, Gradle Project, IntelliJ, Git Bash, Thymeleaf, ...
-
-<style>
-    summary { font-weight: bold; } 
-    .subtitle { font-weight: bold; }
-</style>
-
 <details>
     <summary>Spring Boot 프로젝트 생성하기</summary>
     </br>
@@ -61,25 +55,25 @@ tasks.named('test') {
 <details>
     <summary>시작하기</summary>
     </br>
-    <p class="subtitle">동작 확인</p>
+    <p>동작 확인</p>
     <li>기본 메인 클래스 실행</li>
     <li>스프링 부트 메인 실행 후 에러페이지로 간단하게 동작 확인( http://localhost:8080 )</li>
     <hr>
-    <li class="subtitle">IntelliJ Gradle 대신에 자바 직접 실행 설정하기</li>
+    <li >IntelliJ Gradle 대신에 자바 직접 실행 설정하기</li>
     <ul><p>상단 탭 메뉴 중 FIle => Settings => gradle 검색</p></ul>
     <ul><p>Build and run using 및 Run tests using 값 => 'IntelliJ IDEA'로 변경</p></ul>
     <ul><p>참고 : 윈도우에서 단축키 조회하기 : File => Settings => keymap</p></ul>
     <ul><p>Refactor This 단축키 : Ctrl + Alt + Shift + T</p></ul>
     </br>
-    <li class="subtitle">IntelliJ JDK 설치 확인</li>
-    <ul><li class="subtitle">프로젝트 JDK 설정</li></ul>
-    <ul><li class="subtitle">gradle JDK 설정</li></ul>
+    <li >IntelliJ JDK 설치 확인</li>
+    <ul><li >프로젝트 JDK 설정</li></ul>
+    <ul><li >gradle JDK 설정</li></ul>
     </br>
-    <p class="subtitle">프로젝트 JDK 설정 확인</p>
+    <p>프로젝트 JDK 설정 확인</p>
     <p>* Windows: File => Project Structure(Ctrl+Alt+Shift+S) => Project SDK에서 java 버전 확인</br>
     * Mac: File => Project Structure (⌘;) => Project SDK에서 java 버전 확인</p>
     </br>
-    <p class="subtitle">gradle JDK 설정 ( 위에서 설정 완료 )</p>
+    <p>gradle JDK 설정 ( 위에서 설정 완료 )</p>
     <p>* Windows: File Settings(Ctrl+Alt+S)
     </br>
     * Mac: IntelliJ IDEA | Preferences(⌘,)</p>
@@ -88,11 +82,11 @@ tasks.named('test') {
     Gradle JVM을 새로 설치한 자바 11로 지정</p>
     </br>
     <hr>
-    <p class="subtitle">라이브러리 살펴보기</p>
+    <p>라이브러리 살펴보기</p>
     </br>
-    <li class="subtitle">Gradle은 의존관계가 있는 라이브러리를 함께 다운로드 함.</li>
+    <li >Gradle은 의존관계가 있는 라이브러리를 함께 다운로드 함.</li>
     </br>
-    <p class="subtitle">스프링 부트 라이브러리</p>
+    <p>스프링 부트 라이브러리</p>
     <li>
     spring-boot-starter-web
     <li>spring-boot-starter-tomcat: 톰캣 (웹서버)</li>
@@ -106,7 +100,7 @@ tasks.named('test') {
     <ul>* logback, slf4j</ul>
     </li></li></li>
     </br>
-    <p class="subtitle">테스트 라이브러리</P>
+    <p>테스트 라이브러리</P>
     <li>spring-boot-starter-test
     <ul>* junit: 테스트 프레임워크</ul>
     <ul>* mockito: 목 라이브러리</ul>
@@ -116,7 +110,7 @@ tasks.named('test') {
 </details>
 <hr>
 <details>
-    <summary class="subtitle">View 환경설정</summary>
+    <summary >View 환경설정</summary>
     <li>Welcome Page 만들기</li>
     <code>
     resoures/static/index.html
@@ -138,7 +132,7 @@ tasks.named('test') {
 <ul><li><code>static/index.html</code>을 올려두면 Welcome page 기능을 제공한다.</li></ul>
 <ul><li><a href="https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/spring-boot-features.html#boot-features-spring-mvc-welcome-page">2.3.1.RELEASE버전 문서</a></li></ul>
 </br>
-<p class="subtitle">Thymeleaf템플릿 엔진</p>
+<p>Thymeleaf템플릿 엔진</p>
 <li>thymeleaf 공식 사이트:<a href=" https://www.thymeleaf.org/">https://www.thymeleaf.org/</a></li>
 <li>스프링 공식 튜토리얼: <a href="https://spring.io/guides/gs/serving-web-content/">링크</a></li>
 <li>스프링부트 메뉴얼: <a href="https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/
@@ -170,7 +164,7 @@ public class HelloController {
     <p th:text="'안녕하세요. ' + ${data}" >안녕하세요. 손님</p>
     </body>
     </html>
-<p class="subtitle">thymeleaf 템플릿엔진 동작 확인</p>
+<p>thymeleaf 템플릿엔진 동작 확인</p>
 <li>실행주소 : <a href="http://localhost:8080/hello">http://localhost:8080/hello</a></li>
 </br>
 <li>컨트롤러에서 리턴 값으로 문자를 반환하면 뷰 리졸버( viewResolver )가 화면을 찾아서 처리한다.
@@ -191,7 +185,7 @@ View 파일 변경이 가능하다.
     <ul><li>java -jar hello-spring-0.0.1-SNAPSHOT.jar</li></ul>
     <ul><li>실행 확인</li></ul>
     </br>
-    <p class="subtitle">윈도우 사용자를 위한 팁</P>
+    <p>윈도우 사용자를 위한 팁</P>
     <li>콘솔로 이동 => cmd로 이동</li>
     <li>./gradlew => gradlew.bat 실행</li>
     <li>cmd에서 gradlew.bat를 실행하려면 gradlew하고 엔터.</li>
@@ -230,14 +224,14 @@ View 파일 변경이 가능하다.
     </body>
     </html>
 
-<p class="subtitle"><a href="http://localhost:8080/hello-static.html">실행</a></p>
+<p><a href="http://localhost:8080/hello-static.html">실행</a></p>
 </details>
 </br>
 <details>
     <summary>MVC와 템플릿 엔진</summary>
     <p>MVC : Model, View, Controller</p>
     </br>
-    <p class="subtitle">Controller</p>
+    <p>Controller</p>
     <pre><code>
     @Controller
 public class HelloController {
@@ -249,7 +243,7 @@ public class HelloController {
 }
     </code></pre>
     </br>
-    <p class="subtitle">View</p>
+    <p>View</p>
     <code>resources/templates/hello-template.html</code>
 
     <html xmlns:th="http://www.thymeleaf.org">
@@ -264,7 +258,7 @@ public class HelloController {
 <details>
     <summary>API</summary>
     </br>
-    <p class="subtitle">@ResponseBody 문자 반환</p>
+    <p>@ResponseBody 문자 반환</p>
     <pre><code>
     @Controller
 public class HelloController {
@@ -280,7 +274,7 @@ public class HelloController {
 <p><a href="http://localhost:8080/hello-string?name=spring!!!">http://localhost:8080/hello-string?name=spring!!!</a></p>
 <p>출력 화면 : hello spring!!!</p>
 </br>
-<p class="subtitle">@ResponseBody 객체 반환 (JSON)</p>
+<p>@ResponseBody 객체 반환 (JSON)</p>
 <pre><code>
 @Controller
 public class HelloController {
@@ -314,7 +308,7 @@ HttpMessageConverter 가 선택된다.</p>
 </br></br>
 <hr>
 
-#### 회원 관리 예제 - 백엔드 개발 - spring의 생태계를 알아보기 위한 간단예제
+### 회원 관리 예제 - 백엔드 개발 - spring의 생태계를 알아보기 위한 간단예제
 <details>
     <summary>목차</summary>
     <li>비즈니스 요구사항 정리</li>
@@ -348,7 +342,7 @@ HttpMessageConverter 가 선택된다.</p>
 <details>
     <summary>회원 도메인과 리포지토리 만들기</summary>
     </br>
-    <p class="subtitle">회원 객체</p>
+    <p>회원 객체</p>
 
     package hello.hellospring.domain;
     public class Member {
@@ -369,7 +363,7 @@ HttpMessageConverter 가 선택된다.</p>
     }
     }
 </br>
-    <p class="subtitle">회원 리포지토리 인터페이스</p>
+    <p>회원 리포지토리 인터페이스</p>
 
     package hello.hellospring.repository;
     import hello.hellospring.domain.Member;
@@ -382,7 +376,7 @@ HttpMessageConverter 가 선택된다.</p>
     List<Member> findAll();
     }
 </br>
-    <p class="subtitle">회원 리포지토리 메모리 구현체</p>
+    <p>회원 리포지토리 메모리 구현체</p>
 
     package hello.hellospring.repository;
     import hello.hellospring.domain.Member;
@@ -532,7 +526,7 @@ HttpMessageConverter 가 선택된다.</p>
     }
 
 </br>
-    <p class="subtitle">회원 리포지토리의 코드가 회원 서비스 코드를 DI가능하게 변경</p>
+    <p>회원 리포지토리의 코드가 회원 서비스 코드를 DI가능하게 변경</p>
 
 
 
