@@ -3,6 +3,7 @@
 ### Java 11, IntelliJ 및 Spring Boot 프로젝트 생성하기
 ##### Maven이 아닌 Gradle 체험!
 #### Spring boot, Gradle Project, IntelliJ, Git Bash, Thymeleaf, ...
+<html>
 <Style>
     summary {
         font-weight: bold;
@@ -11,6 +12,7 @@
         font-weight: bold;
     }
 </Style>
+</html>
 <details>
     <summary>Spring Boot 프로젝트 생성하기</summary>
     </br>
@@ -315,6 +317,7 @@ HttpMessageConverter 가 선택된다.</p>
 </details>
 </br></br>
 <hr>
+
 #### 회원 관리 예제 - 백엔드 개발 - spring의 생태계를 알아보기 위한 간단예제
 <details>
     <summary>목차</summary>
@@ -535,7 +538,7 @@ HttpMessageConverter 가 선택된다.</p>
 </br>
     <p class="subtitle">회원 리포지토리의 코드가 회원 서비스 코드를 DI가능하게 변경</p>
 
-    
+
 
 </details>
 
