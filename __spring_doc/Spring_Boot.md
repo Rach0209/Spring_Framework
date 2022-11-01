@@ -3,10 +3,12 @@
 ### Java 11, IntelliJ 및 Spring Boot 프로젝트 생성하기
 ##### Maven이 아닌 Gradle 체험!
 #### Spring boot, Gradle Project, IntelliJ, Git Bash, Thymeleaf, ...
+
 <style>
     summary { font-weight: bold; } 
     .subtitle { font-weight: bold; }
 </style>
+
 <details>
     <summary>Spring Boot 프로젝트 생성하기</summary>
     </br>
