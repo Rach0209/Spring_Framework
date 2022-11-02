@@ -143,11 +143,11 @@ html/spring-boot-features.html#boot-features-spring-mvc-template-engines">링크
 <code>
 @Controller
 public class HelloController {
- @GetMapping("hello")
- public String hello(Model model) {
- model.addAttribute("data", "hello!!");
- return "hello";
- }
+    @GetMapping("hello")
+    public String hello(Model model) {
+    model.addAttribute("data", "hello!!");
+    return "hello";
+    }
 }
 </code>
 </pre>
@@ -233,13 +233,13 @@ View 파일 변경이 가능하다.
     </br>
     <p>Controller</p>
     <pre><code>
-    @Controller
+@Controller
 public class HelloController {
- @GetMapping("hello-mvc")
- public String helloMvc(@RequestParam("name") String name, Model model) {
- model.addAttribute("name", name);
- return "hello-template";
- }
+    @GetMapping("hello-mvc")
+    public String helloMvc(@RequestParam("name") String name, Model model) {
+    model.addAttribute("name", name);
+    return "hello-template";
+    }
 }
     </code></pre>
     </br>
@@ -260,13 +260,13 @@ public class HelloController {
     </br>
     <p>@ResponseBody 문자 반환</p>
     <pre><code>
-    @Controller
+@Controller
 public class HelloController {
- @GetMapping("hello-string")
- @ResponseBody
- public String helloString(@RequestParam("name") String name) {
- return "hello " + name;
- }
+    @GetMapping("hello-string")
+    @ResponseBody
+    public String helloString(@RequestParam("name") String name) {
+    return "hello " + name;
+    }
 }
     </code></pre>
     <li>@ResponseBody를 사용하여 뷰 리졸버(viewResolver)를 사용하지 않게 되었음.</li>
@@ -278,22 +278,22 @@ public class HelloController {
 <pre><code>
 @Controller
 public class HelloController {
- @GetMapping("hello-api")
- @ResponseBody
- public Hello helloApi(@RequestParam("name") String name) {
- Hello hello = new Hello();
- hello.setName(name);
- return hello;
- }
- static class Hello {
- private String name;
- public String getName() {
- return name;
- }
- public void setName(String name) {
- this.name = name;
- }
- }
+    @GetMapping("hello-api")
+    @ResponseBody
+    public Hello helloApi(@RequestParam("name") String name) {
+        Hello hello = new Hello();
+        hello.setName(name);
+        return hello;
+    }
+    static class Hello {
+        private String name;
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 }
 </code></pre>
 <li>@ResponseBody를 사용하고, 객체를 반환하면 객체가 JSON으로 변환되어 나타난다.</li>
@@ -346,21 +346,21 @@ HttpMessageConverter 가 선택된다.</p>
 
     package hello.hellospring.domain;
     public class Member {
-    
-    private Long id;
-    private String name;
-    public Long getId() {
-    return id;
-    }
-    public void setId(Long id) {
-    this.id = id;
-    }
-    public String getName() {
-    return name;
-    }
-    public void setName(String name) {
-    this.name = name;
-    }
+        
+        private Long id;
+        private String name;
+        public Long getId() {
+            return id;
+        }
+        public void setId(Long id) {
+            this.id = id;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 </br>
     <p>회원 리포지토리 인터페이스</p>
@@ -370,10 +370,10 @@ HttpMessageConverter 가 선택된다.</p>
     import java.util.List;
     import java.util.Optional;
     public interface MemberRepository {
-    Member save(Member member);
-    Optional<Member> findById(Long id);
-    Optional<Member> findByName(String name);
-    List<Member> findAll();
+        Member save(Member member);
+        Optional<Member> findById(Long id);
+        Optional<Member> findByName(String name);
+        List<Member> findAll();
     }
 </br>
     <p>회원 리포지토리 메모리 구현체</p>
@@ -385,31 +385,31 @@ HttpMessageConverter 가 선택된다.</p>
     * 동시성 문제가 고려되어 있지 않음, 실무에서는 ConcurrentHashMap, AtomicLong 사용 고려
     */
     public class MemoryMemberRepository implements MemberRepository {
-    private static Map<Long, Member> store = new HashMap<>();
-    private static long sequence = 0L;
-    @Override
-    public Member save(Member member) {
-    member.setId(++sequence);
-    store.put(member.getId(), member);
-    return member;
-    }
-    @Override
-    public Optional<Member> findById(Long id) {
-    return Optional.ofNullable(store.get(id));
-    }
-    @Override
-    public List<Member> findAll() {
-    return new ArrayList<>(store.values());
-    }
-    @Override
-    public Optional<Member> findByName(String name) {
-    return store.values().stream()
-    .filter(member -> member.getName().equals(name))
-    .findAny();
-    }
-    public void clearStore() {
-    store.clear();
-    }
+        private static Map<Long, Member> store = new HashMap<>();
+        private static long sequence = 0L;
+        @Override
+        public Member save(Member member) {
+            member.setId(++sequence);
+            store.put(member.getId(), member);
+            return member;
+        }
+        @Override
+        public Optional<Member> findById(Long id) {
+            return Optional.ofNullable(store.get(id));
+        }
+        @Override
+        public List<Member> findAll() {
+            return new ArrayList<>(store.values());
+        }
+        @Override
+        public Optional<Member> findByName(String name) {
+            return store.values().stream()
+            .filter(member -> member.getName().equals(name))
+            .findAny();
+        }
+        public void clearStore() {
+            store.clear();
+        }
     }
     
 </br>
@@ -429,50 +429,50 @@ HttpMessageConverter 가 선택된다.</p>
     import java.util.Optional;
     import static org.assertj.core.api.Assertions.*;
     class MemoryMemberRepositoryTest {
-    MemoryMemberRepository repository = new MemoryMemberRepository();
-    @AfterEach
-    public void afterEach() {
-    repository.clearStore();
-    }
-    @Test
-    public void save() {
-    //given
-    Member member = new Member();
-    member.setName("spring");
-    //when
-    repository.save(member);
-    //then
-    Member result = repository.findById(member.getId()).get();
-    assertThat(result).isEqualTo(member);
-    }
-    @Test
-    public void findByName() {
-    //given
-    Member member1 = new Member();
-    member1.setName("spring1");
-    repository.save(member1);
-    Member member2 = new Member();
-    member2.setName("spring2");
-    repository.save(member2);
-    //when
-    Member result = repository.findByName("spring1").get();
-    //then
-    assertThat(result).isEqualTo(member1);
-    }
-    @Test
-    public void findAll() {
-    //given
-    Member member1 = new Member();
-    member1.setName("spring1");
-    repository.save(member1);
-    Member member2 = new Member();
-    member2.setName("spring2");
-    repository.save(member2);
-    //when
-    List<Member> result = repository.findAll();
-    //then
-    assertThat(result.size()).isEqualTo(2);
-    }
+            MemoryMemberRepository repository = new MemoryMemberRepository();
+        @AfterEach
+        public void afterEach() {
+            repository.clearStore();
+        }
+        @Test
+        public void save() {
+            //given
+            Member member = new Member();
+            member.setName("spring");
+            //when
+            repository.save(member);
+            //then
+            Member result = repository.findById(member.getId()).get();
+            assertThat(result).isEqualTo(member);
+        }
+        @Test
+        public void findByName() {
+            //given
+            Member member1 = new Member();
+            member1.setName("spring1");
+            repository.save(member1);
+            Member member2 = new Member();
+            member2.setName("spring2");
+            repository.save(member2);
+            //when
+            Member result = repository.findByName("spring1").get();
+            //then
+            assertThat(result).isEqualTo(member1);
+        }
+        @Test
+        public void findAll() {
+            //given
+            Member member1 = new Member();
+            member1.setName("spring1");
+            repository.save(member1);
+            Member member2 = new Member();
+            member2.setName("spring2");
+            repository.save(member2);
+            //when
+            List<Member> result = repository.findAll();
+            //then
+            assertThat(result.size()).isEqualTo(2);
+        }
     }
 
 <li>@AfterEach : 한번에 여러 테스트를 실행하면 메모리 DB에 직전 테스트의 결과가 남을 수 있다. 이렇게
@@ -490,35 +490,36 @@ HttpMessageConverter 가 선택된다.</p>
     import java.util.List;
     import java.util.Optional;
     public class MemberService {
-    private final MemberRepository memberRepository = new
-    MemoryMemberRepository();
-    /**
-    * 회원가입
-    */
-    public Long join(Member member) {
-    validateDuplicateMember(member); //중복 회원 검증
-    memberRepository.save(member);
-    return member.getId();
-    }
-    private void validateDuplicateMember(Member member) {
-    memberRepository.findByName(member.getName())
-    .ifPresent(m -> {
-    throw new IllegalStateException("이미 존재하는 회원입니다.");
-    });
-    }
-    /**
-    * 전체 회원 조회
-    */
-    public List<Member> findMembers() {
-    return memberRepository.findAll();
-    }
-    public Optional<Member> findOne(Long memberId) {
-    return memberRepository.findById(memberId);
-    }
+        private final MemberRepository memberRepository = new
+        MemoryMemberRepository();
+        /**
+        * 회원가입
+        */
+        public Long join(Member member) {
+        validateDuplicateMember(member); //중복 회원 검증
+        memberRepository.save(member);
+        return member.getId();
+        }
+        private void validateDuplicateMember(Member member) {
+        memberRepository.findByName(member.getName())
+        .ifPresent(m -> {
+        throw new IllegalStateException("이미 존재하는 회원입니다.");
+        });
+        }
+        /**
+        * 전체 회원 조회
+        */
+        public List<Member> findMembers() {
+        return memberRepository.findAll();
+        }
+        public Optional<Member> findOne(Long memberId) {
+        return memberRepository.findById(memberId);
+        }
     }
 </br>
     <h4>회원 서비스 테스트</h4>
     <p>기존에는 회원 서비스가 메모리 회원 리포지토리를 직접 생성하게 함.</p>
+    <P>참고 : MemberService클래스에서 Test를 위해 단축키 : Ctrl + Shift + T 를 사용하여 테스트 클래스 바로 만들기</p>
 
     public class MemberService {
     private final MemberRepository memberRepository = 
@@ -527,9 +528,464 @@ HttpMessageConverter 가 선택된다.</p>
 
 </br>
     <p>회원 리포지토리의 코드가 회원 서비스 코드를 DI가능하게 변경</p>
+    
+    public class MemberService {
+        // Test 할 때 다른 리포지터리를 참조 하는 것을 방지하기 위해
+        // 직접 생성한 리포지토리를 DI가능하게 변경
+        private final MemberRepository memberRepository;
+        public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+        }
+        ...
+    }
 
+<p>회원 서비스 테스트</p>
+<pre><code>
+package hello.hellospring.service;
+import hello.hellospring.domain.Member;
+import hello.hellospring.repository.MemoryMemberRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+// Test자동완성 단축키 : Ctrl + Shift + T
+class MemberServiceTest {
+    // new 로 생성하면 다른 인스턴스로 사용하여 디비가 달라 질 수 있다.
+    // MemberService에서 코드 수정했음. 생성자만듬.
+    MemberService memberService;
+    MemoryMemberRepository memberRepository;
 
+    // MemberRepository 를 생성하기 전에 MemberService에서 미리 넣어준다.
+    // MemberService 입장에서 DI된 상태.
+    @BeforeEach
+    public void beforeEach() {
+    memberRepository = new MemoryMemberRepository();
+    memberService = new MemberService(memberRepository);
+    }
 
+    @AfterEach
+    public void afterEach() {
+    memberRepository.clearStore();
+    }
+
+    // 테스트는 메소드를 한글로 해도 상관없다.
+    // 확인하기가 아주 편리해짐. 기본은 영어지만 상관없음.
+    // 빌드될 때 테스트 코드는 포함되지 않기 때문.
+    @Test
+    public void 회원가입() throws Exception {
+    //Given
+    Member member = new Member();
+    member.setName("hello");
+    //When
+    Long saveId = memberService.join(member);
+    //Then
+    Member findMember = memberRepository.findById(saveId).get();
+    assertEquals(member.getName(), findMember.getName());
+    }
+    @Test
+    public void 중복_회원_예외() throws Exception {
+    //Given
+    Member member1 = new Member();
+    member1.setName("spring");
+    Member member2 = new Member();
+    member2.setName("spring");
+    //When
+    memberService.join(member1);
+    IllegalStateException e = assertThrows(IllegalStateException.class,
+    () -> memberService.join(member2));//예외가 발생해야 한다.
+    assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+
+    // try-catch 문으로 잡을 수 있지만, 로직이 복잡해지고 try-catch 를 잡기가 애매하다
+        /*
+        try {
+            memberService.join(member2);
+            fail();
+        } catch (IllegalStateException e) {
+            assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+        }
+        */
+    }
+}
+</code></pre>
+</br>
+<p>@BeforeEach : 각 테스트 실행 전에 호출된다. 테스트가 서로 영향이 없도록 항상 새로운 객체를 생성하고, 
+의존관계도 새로 맺어준다.</p>
 </details>
+<hr>
+<h4>스프링 빈과 의존관계</h4>
+<li>컴포넌트 스캔과 자동 의존관계 설정</li>
+<li>자바 코드로 직접 스프링 빈 등록하기</li>
+</br>
+<details>
+    <summary>컴포넌트 스캔과 자동 의존관계 설정</summary>
+    <p>회원 컨트롤러가 회원서비스와 회원 리포지토리를 사용할 수 있게 의존관계를 준비.</p>
+    </br>
+    <h6>회원 컨트롤러에 의존관계 추가<h6>
+<pre><code>
+package hello.hellospring.controller;
+import hello.hellospring.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+@Controller
+public class MemberController {
+    private final MemberService memberService;
+    @Autowired
+    public MemberController(MemberService memberService) {
+    this.memberService = memberService;
+    }
+}
+
+</code></pre>
+
+<li>생성자에 @Autowired 가 있으면 스프링이 연관된 객체를 스프링 컨테이너에서 찾아서 넣어준다. 이렇게
+객체 의존관계를 외부에서 넣어주는 것을 DI (Dependency Injection), 의존성 주입이라 한다.</li>
+<li>이전 테스트에서는 개발자가 직접 주입했고, 여기서는 @Autowired에 의해 스프링이 주입해준다</li>
+</br>
+<h6>오류 발생</h6>
+<pre><code>
+Consider defining a bean of type 'hello.hellospring.service.MemberService' in 
+your configuration.
+</code></pre>
+</br>
+<h6>memberService가 스프링 빈으로 등록되어 있지 않다.</h6>
+<img src="./스프링 빈X.png">
+<p>참고: helloController는 스프링이 제공하는 컨트롤러여서 스프링 빈으로 자동 등록된다.
+> @Controller 가 있으면 자동 등록됨</p>
+</br>
+<h6>스프링 빈을 등록하는 2가지 방법</h6>
+<li>컴포넌트 스캔과 자동 의존관계 설정</li>
+<li>자바 코드로 직접 스프링 빈 등록하기</li>
+</br>
+<li>@Component 애노테이션이 있으면 스프링 빈으로 자동 등록된다.</li>
+<li>@Controller 컨트롤러가 스프링 빈으로 자동 등록된 이유도 컴포넌트 스캔 때문이다.</li>
+<li>@Component 를 포함하는 다음 애노테이션도 스프링 빈으로 자동 등록된다.</li>
+<ul><li>@Controller</li></ul>
+<ul><li>@Service</li></ul>
+<ul><li>@Repository</li></ul>
+</br>
+<h6>회원 서비스 스프링 빈 등록</h6>
+<pre><code>
+@Service
+public class MemberService {
+    private final MemberRepository memberRepository;
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
+    this.memberRepository = memberRepository;
+    }
+}
+</code></pre>
+
+<p>참고: 생성자에 @Autowired 를 사용하면 객체 생성 시점에 스프링 컨테이너에서 해당 스프링 빈을 찾아서
+주입한다. 생성자가 1개만 있으면 @Autowired 는 생략할 수 있다.</p>
+</br>
+<h6>회원 리포지토리 스프링 빈 등록</h6>
+<pre><code>
+@Repository
+public class MemoryMemberRepository implements MemberRepository {}
+</code></pre>
+</br>
+<p>스프링 빈 등록 이미지</p>
+<img src="./스프링 빈 등록 이미지.png">
+<li>memberService 와 memberRepository 가 스프링 컨테이너에 스프링 빈으로 등록되었다.</li>
+</hr>
+<p>기본적으로 컴포넌트 스캔은 실행되는 main method가 속한 Package를 포함한 하위 package에서만 찾아준다.</p>
+</br>
+<p> 참고: 스프링은 스프링 컨테이너에 스프링 빈을 등록할 때, 기본으로 싱글톤으로 등록한다(유일하게 하나만
+등록해서 공유한다) 따라서 같은 스프링 빈이면 모두 같은 인스턴스다. 설정으로 싱글톤이 아니게 설정할 수
+있지만, 특별한 경우를 제외하면 대부분 싱글톤을 사용한다.</p>
+</details>
+</br>
+<details>
+    <summary>자바 코드로 직접 스프링 빈 등록하기</summary>
+    <li>회원 서비스와 회원 리포지토리의 @Service, @Repository, @Autowired 애노테이션을 제거하고 진행.</li>
+    <pre><code>
+package hello.hellospring;
+import hello.hellospring.repository.MemberRepository;
+import hello.hellospring.repository.MemoryMemberRepository;
+import hello.hellospring.service.MemberService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+@Configuration
+public class SpringConfig {
+    @Bean
+    public MemberService memberService() {
+    return new MemberService(memberRepository());
+    }
+    @Bean
+    public MemberRepository memberRepository() {
+    return new MemoryMemberRepository();
+    }
+}
+    </code></pre>
+    </br>
+    <h5>여기서는 향후 메모리 리포지토리를 다른 리포지토리로 변경할 예정이므로, 컴포넌트 스캔 방식 대신에
+    자바 코드로 스프링 빈을 설정함. 다른 코드에 손대지 않고, 구현체를 바꿔치기 할 수 있다!</h5>
+    <p>참고: XML로 설정하는 방식도 있지만 최근에는 잘 사용하지 않음. Framework 폴더에 xml로 설정한 방식도 연습되어있음.</p>
+    <p>참고: DI에는 필드 주입, setter 주입, 생성자 주입 이렇게 3가지 방법이 있다. 의존관계가 실행중에
+    동적으로 변하는 경우는 거의 없으므로 생성자 주입을 권장한다</p>
+    <p>참고: 실무에서는 주로 정형화된 컨트롤러, 서비스, 리포지토리 같은 코드는 컴포넌트 스캔을 사용한다. 
+    그리고 정형화 되지 않거나, 상황에 따라 구현 클래스를 변경해야 하면 설정을 통해 스프링 빈으로
+    등록한다</p>
+    <h6>주의: @Autowired 를 통한 DI는 helloController , memberService 등과 같이 스프링이 관리하는
+    객체에서만 동작한다. 스프링 빈으로 등록하지 않고 내가 직접 생성한 객체에서는 동작하지 않는다</h6>
+</br>
+<p>MemberController.java에서 변경 내용 필기.</p>
+    <pre><code>
+package hello.hellospring.controller;
+
+import hello.hellospring.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class MemberController {
+    // 인스턴스로 생성하여 사용도 가능하지만, 다른 곳에서 사용하는 MemberService 와 다른 객체가된다.
+    // 똑같은 객체를 사용할 때, 여러개를 사용할 필요없이 스프링 컨테이너가 관리하게 하나만 사용하는게 편리.
+//    private final MemberService memberService = new MemberService();
+    private final MemberService memberService;
+//    @Autowired private final MemberService memberService; 필드 주입도 가능하지만, 좋지 않은 방식.
+//    setter 주입방식. => 멤버 컨트롤을 호출했을 때, public 으로 열려 있어야 함.
+//    누구에게나 노출되어있어 좋지 않다. 조립 시점에 생성하고, 변경하지 못하도록 막아야 한다.
+//    결론 : 생성자 주입을 권장.
+//    @Autowired
+//    public void setMemberService(MemberService memberService) {
+//        this.memberService = memberService;
+//    }
+
+    // 처음에 오류발생 : MemberService 가 처음에는 순수한 자바 코드였기 때문에.
+    // 애노테이션을 등록 해주기 전이었다.
+    // @Repository 와 @Service 를 적용 시켜줌으로 해결.
+    @Autowired
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
+}
+    </code></pre>
+    </br>
+</details>
+<hr>
+<h4>회원 관리 예제 - 웹 MVC 개발</h4>
+<li>회원 웹 기능 - 홈 화면 추가</li>
+<li>회원 웹 기능 - 등록</li>
+<li>회원 웹 기능 - 조회</li>
+</br>
+<details>
+    <summary>회원 웹 기능 - 홈 화면 추가</summary>
+    </br>
+    <h6>홈 컨트롤러 추가</h6>
+    <pre><code>
+package hello.hellospring.controller;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+@Controller
+public class HomeController {
+ @GetMapping("/")
+ public String home() {
+ return "home";
+ }
+}
+    </code></pre>
+    </br>
+    <h6>회원 관리용 홈</h6>
+
+    <!DOCTYPE HTML>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <body>
+    <div class="container">
+        <div>
+            <h1>Hello Spring</h1>
+            <p>회원 기능</p>
+            <p>
+            <a href="/members/new">회원 가입</a>
+            <a href="/members">회원 목록</a>
+            </p>
+        </div>
+    </div> <!-- /container -->
+    </body>
+    </html>
+
+<p>참고: 컨트롤러가 정적 파일보다 우선순위가 높다.</p>
+<h6>요청이 오면, 스프링 컨테이너안의 컨트롤러를 찾고, 없다면 static한 정적파일을 찾기때문.</h6>
+</details>
+</br>
+<details>
+    <summary>회원 웹 기능 - 등록</summary>
+    <p>회원 등록 폼 개발</p>
+    <h6>회원 등록 폼 컨트롤러</h6>
+    <pre><code>
+@Controller
+public class MemberController {
+    private final MemberService memberService;
+    @Autowired
+    public MemberController(MemberService memberService) {
+    this.memberService = memberService;
+    }
+    @GetMapping(value = "/members/new")
+    public String createForm() {
+    return "members/createMemberForm";
+    }
+}
+    </code></pre>
+    </br>
+    <h6>회원 등록 폼HTML (resources/templates/members/createMemberForm)</h6>
+    
+    <!DOCTYPE HTML>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <body>
+    <div class="container">
+        <form action="/members/new" method="post">
+            <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="이름을
+            입력하세요">
+            </div>
+            <button type="submit">등록</button>
+        </form>
+    </div> <!-- /container -->
+    </body>
+    </html>
+
+</br>
+<p>회원 등록 컨트롤러</p>
+</br>
+<h6>웹 등록 화면에서 데이터를 전달 받을 폼 객체</h6>
+
+package hello.hellospring.controller;
+public class MemberForm {
+    private String name;
+    public String getName() {
+    return name;
+    }
+    public void setName(String name) {
+    this.name = name;
+    }
+}
+
+</br>
+<h6>회원 컨트롤러에서 회원을 실제 등록하는 기능</6h>
+
+@PostMapping(value = "/members/new")
+public String create(MemberForm form) {
+    Member member = new Member();
+    member.setName(form.getName());
+    memberService.join(member);
+    return "redirect:/";
+}
+</br>
+</details>
+</br>
+<details>
+    <summary>회원 웹 기능 - 조회</summary>
+    </br>
+    <h6>회원 컨트롤러에서 조회 기능</h6>
+    
+    @GetMapping(value = "/members")
+    public String list(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+        return "members/memberList";
+    }    
+
+</br>
+<h6>회원 리스트 HTML</h6>
+
+    <!DOCTYPE HTML>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div class="container">
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>이름</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="member : ${members}">
+                        <td th:text="${member.id}"></td>
+                        <td th:text="${member.name}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+           </div>
+    </div> <!-- /container -->
+    </body>
+    </html>
+
+</br>
+</details>
+<hr>
+<h4>스프링 DB 접근 기술</h4>
+<p>스프링 데이터 엑세스</p>
+<li>H2 데이터베이스 설치</li>
+<li>순수 Jdbc</li>
+<li>스프링 통합 테스트</li>
+<li>스프링 JdbcTemplate</li>
+<li>JPA</li>
+<li>스프링 데이터 JPA</li>
+</br>
+<details>
+    <summary>H2 데이터베이스 설치</summary>
+    <p>개발이나 테스트 용도로 가볍고 편리한 DB, 웹 화면을 제공한다.</p>
+    <h6> 주의!</br>
+> h2 데이터베이스는 꼭 다음 링크에 들어가서 1.4.200 버전을 설치해주세요.</br>
+> 최근에 나온 2.0.206 버전을 설치하면 일부 기능이 정상 동작하지 않습니다.</br>
+> <a href="https://www.h2database.com/html/download-archive.html">https://www.h2database.com/html/download-archive.html</a></br>
+> 만약 이미 설치하고 실행까지 했다면 다시 설치한 이후에 ~/test.mv.db 파일을 꼭 삭제해주세요.</br>
+> 그렇지 않으면 다음 오류가 발생하면서 접속되지 않습니다.</br>
+> General error: "The write format 1 is smaller than the supported format 2 
+[2.0.206/5]" [50000-202] HY000/50000</h6>
+<hr>
+<li><a href="https://www.h2databae.com">https://www.h2databae.com</a></li>
+<li>다운로드 및 설치</li>
+<li>h2 데이터베이스 버전은 스프링 부트 버전에 맞춘다.</li>
+<li>권한 추가: chmod 755 h2.sh (윈도우 x)</li>
+<li>실행: ./h2.sh (윈도우 x)</li>
+<li>데이터베이스 파일 생성 방법</li>
+<ul><li>jdbc:h2:~/test (최초 한번만)</li></ul>
+<ul><li>~/test.mv.db 파일 생성 확인</li></ul>
+<ul><li>이후부터 jdbc:h2:tcp://localhost/~/test 로 접속</li></ul>
+    </br>
+</details>
+</br>
+<details>
+    <summary>테이블 생성하기</summary>
+    <h6>테이블 관리를 위해 프로젝트 루트에 sql/ddl.sql 파일 생성</h6>
+    <pre><code>
+    drop table if exists member CASCADE;
+    create table member
+    (
+        id bigint generated by default as identity,
+        name varchar(255),
+        primary key (id)
+    );
+</code></pre>
+</br>
+<p>H2 데이터베이스에 접근해서 member 테이블 생성</p>
+</details>
+</br>
+<details>
+    <summary>순수 Jdbc</summary>
+    <p>환경 설정</p>
+    </br>
+    <h6>build.gradle 파일에 jdbc, h2 데이터베이스 관련 라이브러리 추가</h6>
+    <pre><code>
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly 'com.h2database:h2'
+    </code></pre>
+    </br>
+    <h6>스프링 부트 데이터베이스 연결 설정 추가</h6>
+    <code>
+    resources/application.properties
+    </code>
+    <pre><code>
+spring.datasource.url=jdbc:h2:tcp://localhost/~/test
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+    </code></pre>
+    </br>
+</details>
+
 
 
