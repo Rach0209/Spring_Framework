@@ -1499,10 +1499,10 @@ public class MemberService {}
     </br>지금까지 조금이라도 단순하고 반복이라 생각했던 개발 코드들이 확연하게 줄어듭니다. 
     </br>따라서 개발자는 핵심 비즈니스 로직을 개발하는데, 집중할 수 있습니다.
     </br>실무에서 관계형 데이터베이스를 사용한다면 스프링 데이터 JPA는 이제 선택이 아니라 필수 입니다.</p>
-    <p>주의: 스프링 데이터 JPA는 JPA를 편리하게 사용하도록 도와주는 기술입니다. 따라서 JPA를 먼저 학습한 후에 스프링 데이터 JPA를 학습해야 합니다.</p>
+    <p>주의: 스프링 데이터 JPA는 JPA를 편리하게 사용하도록 도와주는 기술입니다. 따라서 JPA를 먼저 학습한 후에 스프링 데이터 JPA를 학습하는 것을 권장.</p>
     <li>앞의 JPA 설정을 그대로 사용.</li>
     </br>
-    <h6>스프링 데이터 JPA회원 리포지토리</h6>
+    <h6>스프링 데이터 JPA 회원 리포지토리</h6>
 
 
     package hello.hellospring.repository;
@@ -1551,6 +1551,127 @@ public class MemberService {}
     </br>Querydsl을 사용하면 쿼리도 자바 코드로 안전하게 작성할 수 있고, 동적 쿼리도 편리하게 작성할 수 있다.
     </br>이 조합으로 해결하기 어려운 쿼리는 JPA가 제공하는 네이티브 쿼리를 사용하거나, 앞서 학습한 스프링 JdbcTemplate를 사용하면 된다.</p>
 </details>
+<hr>
+    <h4>AOP</h4>
+<details>
+    <summary>AOP가 필요한 상황 예시</summary>
+    <li>모든 메소드의 호출 시간을 축정하고 싶을 때.</li>
+    <li>공통 관심 사항(cross-cutting concern) vs 핵심 관심 사항(core concern)</li>
+    <li>회원 가입 시간, 회원 조회 시간을 측정하고 싶을 때.</li>
+    <img src="./AOP가 필요한 상황.png">
+    </br>
+    <h6>MemberService 회원 조회 시간 측정 추가</h6>
+
+
+    package hello.hellospring.service;
+    @Transactional
+    public class MemberService {
+        /**
+        * 회원가입
+        */
+        public Long join(Member member) {
+            long start = System.currentTimeMillis();
+            try {
+                validateDuplicateMember(member); //중복 회원 검증
+                memberRepository.save(member);
+                return member.getId();
+            } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("join " + timeMs + "ms");
+            }
+        }
+        /**
+        * 전체 회원 조회
+        */
+        public List<Member> findMembers() {
+            long start = System.currentTimeMillis();
+            try {
+                return memberRepository.findAll();
+            } finally {
+                long finish = System.currentTimeMillis();
+                long timeMs = finish - start;
+                System.out.println("findMembers " + timeMs + "ms");
+            }
+        }
+    }
+
+</br>
+<p>문제</p>
+<li>회원가입, 회원 조회에 시간을 측정하는 기능은 핵심 관심 사항이 아님.</li>
+<li>시간을 측정하는 로직은 공통 관심 사항이다.</li>
+<li>시간을 측정하는 로직과 핵심 비즈니스의 로직이 섞여서 유지보수가 어렵다.</li>
+<li>시간을 측정하는 로직을 별도의 공통 로직으로 만들기 매우 어렵다.</li>
+<li>시간을 측정하는 로직을 변경할 때 모든 로직을 찾아가면서 변경해야 한다.</li>
+</details>
+</br>
+<details>
+    <summary>AOP 적용</summary>
+    <li>AOP : Aspect Oriented Programming</li>
+    <li>공통 관심 사항(cross-cutting concern) vs 핵심 관심 사항(core concern)분리</li>
+    <img src="./AOP적용.png">
+    </br>
+    <h6>시간 측정 AOP 등록</h6>
+
+
+    package hello.hellospring.aop;
+    import org.aspectj.lang.ProceedingJoinPoint;
+    import org.aspectj.lang.annotation.Around;
+    import org.aspectj.lang.annotation.Aspect;
+    import org.springframework.stereotype.Component;
+    @Component
+    @Aspect
+    public class TimeTraceAop {
+        @Around("execution(* hello.hellospring..*(..))")
+        public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+            long start = System.currentTimeMillis();
+            System.out.println("START: " + joinPoint.toString());
+            try {
+                return joinPoint.proceed();
+            } finally {
+                long finish = System.currentTimeMillis();
+                long timeMs = finish - start;
+                System.out.println("END: " + joinPoint.toString()+ " " + timeMs + "ms");
+            }
+        }
+    }
+
+</br>
+<h6>해결</h6>
+<li>회원가입, 회원 조회 등 핵심 관심사항과 시간을 측정하는 공통 관심 사항을 분리한다.</li>
+<li>시간을 측정하는 로직을 별도의 공통 로직으로 만들었다.</li>
+<li>핵심 관심 사항을 깔끔하게 유지할 수 있다.</li>
+<li>변경이 필요하면 이 로직만 변경하면 된다.</li>
+<li>원하는 적용 대상을 선택할 수 있다.</li>
+</details>
+</br>
+<details>
+    <summary>스프링의 AOP 동작 방식 설명</summary>
+    </br>
+    <h6>AOP 적용 전 의존관계</h6>
+    <img src="./AOP적용전.png">
+    </br>
+    <h6>AOP 적용 후 의존관계</h6>
+    <img src="./AOP적용후.png">
+    <h5>참고 : proxy라는 기술로 발생하는 가짜 스프링 빈을 세우고, 프록시에서 작업이 끝나면 실제 스프링 빈으로 넘겨준다.</h5>
+    </br>
+    <h6>AOP 적용 전 전체 그림</h6>
+    <img src="./AOP적용전전체.png">
+    <h6>AOP 적용 후 전체 그림</h6>
+    <img src="./AOP적용후전체.png">
+    </br>
+    <li>실제 Proxy가 주입되는지 콘솔에 출력해서 확인하기</li>
+    <li>MemberController에서 MemberService가 Injection 되는 부분에 콘솔 출력 추가함.</li>
+    <ul><li>memberService= class hello.hellospring.service.MemberService$$EnhancerBySpringCGLIB$$c08aa438</li></ul>
+    <ul><li>EnhancerBySpringCGLIB 라는 것이 확인.</li></ul>
+    <ul><li>-> MemberService를 복제해서 코드를 조작하는 기술.</li></ul>
+</details>
+</br>
+<details>
+    <summary>참고 인강 로드맵</summary>
+    <a href=" https://www.inflearn.com/roadmaps/149">스프링 부트와 JPA 실무 완전 정복 로드맵</a>
+</details>
+
 
 
 
