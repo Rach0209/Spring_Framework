@@ -1669,7 +1669,7 @@ public class MemberService {}
 </br>
 <details>
     <summary>참고 인강 로드맵</summary>
-    <a href=" https://www.inflearn.com/roadmaps/149">스프링 부트와 JPA 실무 완전 정복 로드맵</a>
+    <a href="https://www.inflearn.com/roadmaps/149">스프링 부트와 JPA 실무 완전 정복 로드맵</a>
 </details>
 
 
